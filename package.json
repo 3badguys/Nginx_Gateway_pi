@@ -1,0 +1,11 @@
+{
+  "name": "nginx-gateway",
+  "private": true,
+  "scripts": {
+    "setup": "node setup.mjs",
+    "start": "docker compose up -d",
+    "stop": "docker compose down",
+    "restart": "docker compose restart",
+    "logs": "docker compose logs -f"
+  }
+}
