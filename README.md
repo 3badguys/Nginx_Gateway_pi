@@ -31,6 +31,7 @@ npm run logs
 
 | 变量 | 说明 | 示例 |
 |---|---|---|
+| `TIMEZONE` | 时区 | `Asia/Shanghai` |
 | `FRP_SERVER_ADDR` | FRP 服务器地址 | `frp.example.com` |
 | `FRP_SERVER_PORT` | FRP 服务器端口 | `7000` |
 | `FRP_AUTH_TOKEN` | FRP 认证令牌 | `your-token-here` |
