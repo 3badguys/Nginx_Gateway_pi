@@ -18,8 +18,22 @@ localPort = 22
 remotePort = 6022
 
 [[proxies]]
-name = "nginx-gateway-pi"
+name = "pi-ha"
 type = "http"
 localIP = "127.0.0.1"
 localPort = 80
-subdomain = "pi"
+subdomain = "ha"
+
+[[proxies]]
+name = "pi-nodered"
+type = "http"
+localIP = "127.0.0.1"
+localPort = 80
+subdomain = "nodered"
+
+[[proxies]]
+name = "pi-esphome"
+type = "http"
+localIP = "127.0.0.1"
+localPort = 80
+subdomain = "esphome"

@@ -3,6 +3,7 @@
 
 # Generated config (from .env + template)
 frpc.toml
+nginx.conf
 
 # Nginx logs
 logs/

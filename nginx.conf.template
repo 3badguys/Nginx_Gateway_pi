@@ -34,20 +34,48 @@ access_log /var/log/nginx/access.log;
 error_log  /var/log/nginx/error.log warn;
 
 # ==============================================
-# Virtual host
+# Home Assistant — ha.${FRP_SERVER_ADDR}
 # ==============================================
 server {
     listen       80;
-    server_name  localhost;
+    server_name  ha.${FRP_SERVER_ADDR};
 
-    # ---- /ha/ — home assistant ----
-    location /ha/ {
-        proxy_pass http:/host.docker.internal:8123/;
-    }
-
-    # ---- / — default: 404 ----
     location / {
-        default_type application/json;
-        return 404 '{"error": "Not Found"}';
+        proxy_pass http://host.docker.internal:8123/;
     }
+}
+
+# ==============================================
+# Node-RED — nodered.${FRP_SERVER_ADDR}
+# ==============================================
+server {
+    listen       80;
+    server_name  nodered.${FRP_SERVER_ADDR};
+
+    location / {
+        proxy_pass http://host.docker.internal:1880/;
+    }
+}
+
+# ==============================================
+# ESPHome — esphome.${FRP_SERVER_ADDR}
+# ==============================================
+server {
+    listen       80;
+    server_name  esphome.${FRP_SERVER_ADDR};
+
+    location / {
+        proxy_pass http://host.docker.internal:6052/;
+    }
+}
+
+# ==============================================
+# Default — catch-all
+# ==============================================
+server {
+    listen       80 default_server;
+    server_name  _;
+
+    default_type application/json;
+    return 404 '{"error": "Not Found"}';
 }

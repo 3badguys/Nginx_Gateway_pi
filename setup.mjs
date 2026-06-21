@@ -1,11 +1,9 @@
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
+import { dirname, join, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const ENV_FILE = join(ROOT, '.env');
-const TEMPLATE_FILE = join(ROOT, 'frpc.toml.template');
-const OUTPUT_FILE = join(ROOT, 'frpc.toml');
 
 // ----- 1. Check .env exists -----
 if (!existsSync(ENV_FILE)) {
@@ -26,12 +24,21 @@ for (const line of envRaw.split('\n')) {
   env[trimmed.slice(0, eq).trim()] = trimmed.slice(eq + 1).trim();
 }
 
-// ----- 3. Substitute template -----
-const template = readFileSync(TEMPLATE_FILE, 'utf-8');
-const result = template.replace(/\$\{(\w+)\}/g, (_, key) =>
-  Object.hasOwn(env, key) ? env[key] : `\${${key}}`
-);
+// ----- 3. Find & process all .template files -----
+const files = readdirSync(ROOT);
+const templateFiles = files.filter(f => f.endsWith('.template'));
 
-// ----- 4. Write frpc.toml -----
-writeFileSync(OUTPUT_FILE, result);
-console.log('frpc.toml generated successfully.');
+if (templateFiles.length === 0) {
+  console.log('No .template files found.');
+  process.exit(0);
+}
+
+for (const tpl of templateFiles) {
+  const outputName = basename(tpl, '.template');            // "frpc.toml.template" → "frpc.toml"
+  const template = readFileSync(join(ROOT, tpl), 'utf-8');
+  const result = template.replace(/\$\{(\w+)\}/g, (_, key) =>
+    Object.hasOwn(env, key) ? env[key] : `\${${key}}`
+  );
+  writeFileSync(join(ROOT, outputName), result);
+  console.log(`${outputName} generated from ${tpl}.`);
+}
