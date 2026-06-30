@@ -25,6 +25,13 @@ localPort = 80
 subdomain = "ha"
 
 [[proxies]]
+name = "pi-z2m"
+type = "http"
+localIP = "127.0.0.1"
+localPort = 80
+subdomain = "z2m"
+
+[[proxies]]
 name = "pi-nodered"
 type = "http"
 localIP = "127.0.0.1"

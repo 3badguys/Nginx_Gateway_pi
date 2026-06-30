@@ -47,6 +47,7 @@ npm run logs
 | 子域名 | 服务 | 后端端口 |
 |--------|------|----------|
 | `ha.${FRP_SERVER_ADDR}` | Home Assistant | 8123 |
+| `z2m.${FRP_SERVER_ADDR}` | zigbee2mqtt | 8080 |
 | `nodered.${FRP_SERVER_ADDR}` | Node-RED | 1880 |
 | `esphome.${FRP_SERVER_ADDR}` | ESPHome | 6052 |
 

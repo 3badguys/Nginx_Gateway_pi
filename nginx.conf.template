@@ -46,6 +46,18 @@ server {
 }
 
 # ==============================================
+# zigbee2mqtt — z2m.${FRP_SERVER_ADDR}
+# ==============================================
+server {
+    listen       80;
+    server_name  z2m.${FRP_SERVER_ADDR};
+
+    location / {
+        proxy_pass http://host.docker.internal:8080/;
+    }
+}
+
+# ==============================================
 # Node-RED — nodered.${FRP_SERVER_ADDR}
 # ==============================================
 server {
