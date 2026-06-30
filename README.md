@@ -1,4 +1,4 @@
-# Nginx Gateway Local
+# Nginx Gateway pi
 
 Nginx 反向代理网关，通过子域名将请求分发到后端服务，内置 frp 内网穿透支持。
 
@@ -102,34 +102,3 @@ docker compose up -d nginx-gateway     # 仅启动 nginx
 - **`ports`**：host 模式直接使用宿主机网络栈，容器内监听的端口自动暴露在宿主机上，不需要也不允许通过 `ports` 做 NAT 映射。
 
 - **`networks`**：host 模式容器不加入任何 Docker 自定义网络，因为它已经与宿主机共享网络命名空间。加入其他网络会造成网络冲突，因此 Docker Compose 会静默忽略该配置。
-
-## 树莓派开机自动关闭 Wi-Fi 省电模式
-
-**现象**：树莓派 Wi-Fi 时不时不稳定，连不上网络。无论怎样 `up/down wlan0` 或重启服务都无效，只有断电等待一段时间再重启才能恢复。
-
-**原因**：Wi-Fi 模块的省电模式（Power Management）偶发性导致硬件死锁，彻底断电可复位。关闭省电模式可大幅降低触发概率。
-
-### 设置步骤
-
-1. 拷贝 `service服务文件` 到 `systemd` 目录：
-
-```bash
-sudo cp ./disable-wifi-powersave.service /etc/systemd/system/
-```
-
-2. 启用服务并立即生效：
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl enable --now disable-wifi-powersave.service
-```
-
-3. 验证是否成功：
-
-```bash
-iwconfig wlan0
-
-sudo reboot
-```
-
-输出应为 `Power Management: off`。
